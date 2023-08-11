@@ -36,7 +36,7 @@ export default function Login({ navigation, route }) {
     else setPasswordError("");
     //authentication
     if (email == signupEmail && password == signupPassword) {
-      navigation.navigate("Home");
+      navigation.navigate("Bottomtab");
     } else if (email && password) {
       alert("Please enter valid login details");
     }
@@ -70,7 +70,7 @@ export default function Login({ navigation, route }) {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    alignContent: "center",
+    alignItems: "center",
     justifyContent: "center",
   },
   text: {
