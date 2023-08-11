@@ -1,6 +1,6 @@
 import { View, Text, Pressable } from "react-native";
 
-function Button({ text, color, navigation, navigateto }) {
+function Button({ text, color,onpressFunc}) {
   return (
     <View style={{ alignItems: "center", justifyContent: "center" }}>
       <Pressable
@@ -12,9 +12,7 @@ function Button({ text, color, navigation, navigateto }) {
           borderRadius: 25,
           margin: 10,
         }}
-        onPress={() => {
-          navigation.navigate(navigateto);
-        }}
+        onPress={onpressFunc}
       >
         <Text style={{ textAlign: "center", color: "white", fontSize: 18 }}>
           {text}

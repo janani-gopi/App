@@ -7,6 +7,12 @@ const IMAGE = {
 };
 
 function Action({ navigation }) {
+  function onhandleLogin() {
+    navigation.navigate("Login");
+  }
+  function onhandleSignup() {
+    navigation.navigate("Signup");
+  }
   return (
     <View style={styles.container}>
       <ImageBackground
@@ -17,18 +23,8 @@ function Action({ navigation }) {
         <View style={styles.overlay} />
         <Text style={styles.text}>DELIVERED FAST FOOD TO YOUR DOOR</Text>
         <StatusBar style="auto" />
-        <Button
-          text="Login"
-          color="#ffb805"
-          navigation={navigation}
-          navigateto="Login"
-        />
-        <Button
-          text="Signup"
-          color="#0077b6"
-          navigation={navigation}
-          navigateto="Signup"
-        />
+        <Button text="Login" color="#ffb805" onpressFunc={onhandleLogin} />
+        <Button text="Signup" color="#0077b6" onpressFunc={onhandleSignup} />
       </ImageBackground>
     </View>
   );
@@ -37,12 +33,12 @@ function Action({ navigation }) {
 export default Action;
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: "#ffff",
-    alignItems: "center",
-    justifyContent: "center",
-  },
+   container: {
+     flex: 1,
+     backgroundColor: "#ffff",
+     alignItems: "center",
+     justifyContent: "center",
+   },
   text: {
     fontSize: 60,
     color: "white",
@@ -54,7 +50,6 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: "center",
     width: 400,
-    
   },
   overlay: {
     flex: 1,
