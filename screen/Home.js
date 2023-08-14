@@ -7,18 +7,21 @@ import {
   Image,
   TextInput,
 } from "react-native";
+import { FontAwesome } from "react-native-vector-icons/FontAwesome";
 import { data } from "../data/data";
-import FontAwesome from "react-native-vector-icons/FontAwesome";
 import { Card } from "react-native-paper";
 import { useState } from "react";
 import DropdownComponent from "./Dropdown";
+import Cards from "../components/Cards";
 
 function Home({ navigation }) {
   const [searchInput, setSearchInput] = useState("");
   const [category, setCategory] = useState("");
 
+
   return (
     <ScrollView>
+      <Text style={styles.header}>Foodo</Text>
       <TextInput
         style={styles.input}
         placeholder="search here by name"
@@ -33,7 +36,11 @@ function Home({ navigation }) {
             if (category || searchInput) {
               if (category == each_data.category) {
                 if (searchInput) {
-                  if (each_data.name.includes(searchInput)) {
+                  if (
+                    each_data.name
+                      .toLowerCase()
+                      .includes(searchInput.toLowerCase())
+                  ) {
                     return each_data;
                   }
                 } else {
@@ -41,19 +48,25 @@ function Home({ navigation }) {
                 }
               }
               if (searchInput) {
-                if (each_data.name.includes(searchInput)) {
+                if (
+                  each_data.name
+                    .toLowerCase()
+                    .includes(searchInput.toLowerCase())
+                ) {
                   return each_data;
                 }
               }
             } else return each_data;
           })
-          ?.map(({ image, id, name, category }) => {
+          ?.map(({ image, id, name, category, rating }) => {
             return (
-              <Card style={styles.card} key={id}>
-                <Image source={{ uri: image }} style={styles.image} />
-                <Text style={styles.text}>{name}</Text>
-                <Text style={styles.smalltext}>{category}</Text>
-              </Card>
+              <Cards
+                image={image}
+                key={id}
+                name={name}
+                category={category}
+                rating={rating}
+              />
             );
           })}
       </View>
@@ -70,35 +83,55 @@ const styles = StyleSheet.create({
     justifyContent: "center",
   },
   card: {
-    padding: 20,
-    width: "100%",
-    borderBottomWidth: 1,
-    borderBottomColor: "gray",
+    padding: 25,
+    width: "95%",
     height: 340,
+    borderLeftWidth: 5,
+    margin: 15,
+    borderColor: "#ffb805",
   },
+
   input: {
-    padding: 5,
-    borderRadius: 20,
+    padding: 8,
+    borderRadius: 13,
     height: 50,
-    borderWidth: 2,
-    borderColor: "lightgray",
+    borderWidth: 1,
+    borderColor: "#ffb805",
     marginTop: 40,
     margin: 20,
-    backgroundColor: "lightgray",
+    fontFamily:"PoppinsReg"
+  },
+  header: {
+    backgroundColor: "#ffb805",
+    fontSize: 20,
+    padding: 20,
+    color: "white",
+    marginTop: 25,
+    textAlign: "center",
+    fontFamily:"PoppinsBold"
   },
   image: {
     padding: 10,
     height: 220,
     borderRadius: 25,
-    width: 350,
+    width: 300,
   },
   text: {
     padding: 10,
-    fontSize: 25,
+    fontSize: 20,
+    color: "gray",
     textAlign: "center",
   },
   smalltext: {
     padding: 6,
-    color: "gray",
+    color: "#ffb805",
   },
 });
+
+{
+  /* <Card style={styles.card} key={id}>
+                <Image source={{ uri: image }} style={styles.image} />
+                <Text style={styles.text}>{name}</Text>
+                <Text style={styles.smalltext}>{category}</Text>
+              </Card> */
+}

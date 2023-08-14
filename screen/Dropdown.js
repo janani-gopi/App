@@ -25,7 +25,7 @@ export default function DropdownComponent({ setvalue, value }) {
     <View style={styles.container}>
       {renderLabel()}
       <Dropdown
-        style={[styles.dropdown, isFocus && { borderColor: "blue" }]}
+        style={[styles.dropdown, isFocus && { borderColor: "#ffb805" }]}
         placeholderStyle={styles.placeholderStyle}
         selectedTextStyle={styles.selectedTextStyle}
         inputSearchStyle={styles.inputSearchStyle}
@@ -55,8 +55,8 @@ const styles = StyleSheet.create({
   },
   dropdown: {
     height: 50,
-    borderColor: "gray",
-    borderWidth: 0.5,
+    borderColor: "#ffb805",
+    borderWidth: 1,
     borderRadius: 8,
     paddingHorizontal: 8,
   },
@@ -65,18 +65,24 @@ const styles = StyleSheet.create({
   },
   label: {
     position: "absolute",
-    backgroundColor: "lightgray",
+    backgroundColor: "#ffb805",
+    borderRadius:10,
     left: 22,
     top: 8,
     zIndex: 999,
     paddingHorizontal: 8,
     fontSize: 14,
+    color:"white"
   },
   placeholderStyle: {
-    fontSize: 16,
+    fontSize: 14,
+    color:"gray",
+    fontFamily:"PoppinsReg"
   },
   selectedTextStyle: {
     fontSize: 16,
+    color:"gray",
+    fontFamily:"PoppinsReg"
   },
   iconStyle: {
     width: 20,

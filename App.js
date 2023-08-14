@@ -1,5 +1,4 @@
 import { NavigationContainer } from "@react-navigation/native";
-
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import Action from "./screen/Action";
 import Login from "./screen/Login";
@@ -8,10 +7,15 @@ import Home from "./screen/Home";
 import Profile from "./screen/Profile";
 import Setting from "./screen/Setting";
 import Bottomtab from "./screen/Bottomtab";
+import { useFonts } from 'expo-font';
 
 const Stack = createNativeStackNavigator();
 
 export default function App() {
+  const [fontsLoaded] = useFonts({
+    'PoppinsBold': require("./assets/fonts/Poppins-Bold.ttf"),
+    'PoppinsReg':require("./assets/fonts/Poppins-Regular.ttf")
+  });
   return (
     <NavigationContainer>
       <Stack.Navigator
