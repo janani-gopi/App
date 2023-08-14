@@ -6,35 +6,76 @@ import {
   ScrollView,
   Image,
   TextInput,
+  Button,
+  DrawerLayoutAndroid,
 } from "react-native";
-import { FontAwesome } from "react-native-vector-icons/FontAwesome";
+import {BackHandler} from 'react-native';
 import { data } from "../data/data";
-import { Card } from "react-native-paper";
-import { useState } from "react";
+import { useRef, useState } from "react";
 import DropdownComponent from "./Dropdown";
 import Cards from "../components/Cards";
+import Ionicons from "react-native-vector-icons/Ionicons";
 
 function Home({ navigation }) {
   const [searchInput, setSearchInput] = useState("");
   const [category, setCategory] = useState("");
-
-
+  const drawer = useRef(null);
+  const navigationView = () => (
+    <View style={[styles.container, styles.navigationContainer]}>
+      {/* exits the app */}
+      <Pressable onPress={()=>{BackHandler.exitApp()}} style={styles.drawerbtn}>
+        <Text style={styles.btntext}>Logout</Text>
+      </Pressable>
+      <Pressable onPress={() =>{drawer.current.closeDrawer()}} style={styles.drawerbtn}>
+        <Text style={styles.btntext}>back to home</Text>
+      </Pressable>
+    </View>
+  );
   return (
-    <ScrollView>
-      <Text style={styles.header}>Foodo</Text>
-      <TextInput
-        style={styles.input}
-        placeholder="search here by name"
-        onChangeText={(e) => {
-          setSearchInput(e);
-        }}
-      ></TextInput>
-      <DropdownComponent setvalue={setCategory} value={category} />
-      <View style={styles.container}>
-        {data
-          .filter((each_data) => {
-            if (category || searchInput) {
-              if (category == each_data.category) {
+    <DrawerLayoutAndroid
+      ref={drawer}
+      drawerWidth={300}
+      drawerPosition={"left"}
+      renderNavigationView={navigationView}
+    >
+      <ScrollView>
+        <View style={styles.header}>
+          <Ionicons
+            name="menu"
+            color="white"
+            size={40}
+            padding={6}
+            onPress={() => {
+              drawer.current.openDrawer();
+            }}
+          />
+          <Text style={styles.headerText}>Foodo</Text>
+        </View>
+        <TextInput
+          style={styles.input}
+          placeholder="search here by name"
+          onChangeText={(e) => {
+            setSearchInput(e);
+          }}
+        ></TextInput>
+        <DropdownComponent setvalue={setCategory} value={category} />
+        <View style={styles.container}>
+          {data
+            .filter((each_data) => {
+              if (category || searchInput) {
+                if (category == each_data.category) {
+                  if (searchInput) {
+                    if (
+                      each_data.name
+                        .toLowerCase()
+                        .includes(searchInput.toLowerCase())
+                    ) {
+                      return each_data;
+                    }
+                  } else {
+                    return each_data;
+                  }
+                }
                 if (searchInput) {
                   if (
                     each_data.name
@@ -43,34 +84,25 @@ function Home({ navigation }) {
                   ) {
                     return each_data;
                   }
-                } else {
-                  return each_data;
                 }
-              }
-              if (searchInput) {
-                if (
-                  each_data.name
-                    .toLowerCase()
-                    .includes(searchInput.toLowerCase())
-                ) {
-                  return each_data;
-                }
-              }
-            } else return each_data;
-          })
-          ?.map(({ image, id, name, category, rating }) => {
-            return (
-              <Cards
-                image={image}
-                key={id}
-                name={name}
-                category={category}
-                rating={rating}
-              />
-            );
-          })}
-      </View>
-    </ScrollView>
+              } else return each_data;
+            })
+            ?.map(({ image, id, name, category, rating }) => {
+              return (
+                <View key={id}>
+                  <Cards
+                    image={image}
+                    key={id}
+                    name={name}
+                    category={category}
+                    rating={rating}
+                  />
+                </View>
+              );
+            })}
+        </View>
+      </ScrollView>
+    </DrawerLayoutAndroid>
   );
 }
 
@@ -99,16 +131,23 @@ const styles = StyleSheet.create({
     borderColor: "#ffb805",
     marginTop: 40,
     margin: 20,
-    fontFamily:"PoppinsReg"
+    fontFamily: "PoppinsReg",
   },
   header: {
     backgroundColor: "#ffb805",
-    fontSize: 20,
-    padding: 20,
     color: "white",
-    marginTop: 25,
+    display: "flex",
+    flexDirection: "row",
+    padding: 6,
+    justifyContent: "space-between",
+    marginTop:25
+  },
+  headerText: {
+    color: "white",
+    fontFamily: "PoppinsBold",
+    fontSize: 20,
     textAlign: "center",
-    fontFamily:"PoppinsBold"
+    padding: 10,
   },
   image: {
     padding: 10,
@@ -126,12 +165,27 @@ const styles = StyleSheet.create({
     padding: 6,
     color: "#ffb805",
   },
+  logoutbtn: {
+    height: 100,
+    color: "black",
+  },
+  navigationContainer: {
+    backgroundColor: "#ecf0f1",
+  },
+  paragraph: {
+    padding: 16,
+    fontSize: 15,
+    textAlign: "center",
+  },
+  drawerbtn:{
+    backgroundColor:"#ffb805",
+    padding:15,
+    borderRadius:15,
+    margin:20,
+    paddingHorizontal:60
+  },
+  btntext:{
+    color:"white",
+    fontSize:15
+  }
 });
-
-{
-  /* <Card style={styles.card} key={id}>
-                <Image source={{ uri: image }} style={styles.image} />
-                <Text style={styles.text}>{name}</Text>
-                <Text style={styles.smalltext}>{category}</Text>
-              </Card> */
-}

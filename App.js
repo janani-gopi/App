@@ -7,15 +7,16 @@ import Home from "./screen/Home";
 import Profile from "./screen/Profile";
 import Setting from "./screen/Setting";
 import Bottomtab from "./screen/Bottomtab";
-import { useFonts } from 'expo-font';
+import { useFonts } from "expo-font";
 
 const Stack = createNativeStackNavigator();
 
 export default function App() {
   const [fontsLoaded] = useFonts({
-    'PoppinsBold': require("./assets/fonts/Poppins-Bold.ttf"),
-    'PoppinsReg':require("./assets/fonts/Poppins-Regular.ttf")
+    PoppinsBold: require("./assets/fonts/Poppins-Bold.ttf"),
+    PoppinsReg: require("./assets/fonts/Poppins-Regular.ttf"),
   });
+
   return (
     <NavigationContainer>
       <Stack.Navigator

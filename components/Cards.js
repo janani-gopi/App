@@ -39,7 +39,7 @@ const styles = StyleSheet.create({
     fontSize: 20,
     color: "gray",
     textAlign: "center",
-    fontFamily:"PoppinsReg"
+    fontFamily:"PoppinsBold"
   },
   smalltext: {
     padding: 6,
