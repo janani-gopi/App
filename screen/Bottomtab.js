@@ -1,6 +1,6 @@
-import { NavigationContainer } from "@react-navigation/native";
+
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
-import Home from "./Home";
+import Home from "./Home"
 import Profile from "./Profile";
 import Setting from "./Setting";
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";

@@ -7,17 +7,15 @@ import Signup from "./screen/Signup";
 import Home from "./screen/Home";
 import Profile from "./screen/Profile";
 import Setting from "./screen/Setting";
-import Bottomtab from "./screen/Bottomtab"
-
+import Bottomtab from "./screen/Bottomtab";
 
 const Stack = createNativeStackNavigator();
-
 
 export default function App() {
   return (
     <NavigationContainer>
       <Stack.Navigator
-        screenOptions={{ 
+        screenOptions={{
           headerShown: false,
         }}
         initialRouteName="Bottomtab"
@@ -30,7 +28,6 @@ export default function App() {
         <Stack.Screen name="Profile" component={Profile} />
         <Stack.Screen name="Setting" component={Setting} />
       </Stack.Navigator>
-      
     </NavigationContainer>
   );
 }
