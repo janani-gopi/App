@@ -1,6 +1,6 @@
 import { View, TextInput, StyleSheet } from "react-native";
 
-export default function Textinput({ placeholder, state }) {
+export default function Textinput({ placeholder, state}) {
   return (
     <View>
       <TextInput
@@ -15,7 +15,6 @@ export default function Textinput({ placeholder, state }) {
 const styles = StyleSheet.create({
   input: {
     padding: 15,
-    border: "none",
     backgroundColor: "lightgray",
     borderRadius: 25,
     margin : 10,

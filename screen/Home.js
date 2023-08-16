@@ -14,11 +14,39 @@ import Cards from "../components/Cards";
 import Ionicons from "react-native-vector-icons/Ionicons";
 import { styles } from "../styles/Home";
 
-function Home({ navigation }) {
+function Home() {
   const [searchInput, setSearchInput] = useState("");
   const [category, setCategory] = useState("");
   const drawer = useRef(null);
-  const navigationView = () => (
+  //function to handle search and category filter
+  function onHandleSearch(each_data){
+    if (category || searchInput) {
+      if (category == each_data.category) {
+        if (searchInput) {
+          if (
+            each_data.name
+              .toLowerCase()
+              .includes(searchInput.toLowerCase())
+          ) {
+            return each_data;
+          }
+        } else {
+          return each_data;
+        }
+      }
+      if (searchInput) {
+        if (
+          each_data.name
+            .toLowerCase()
+            .includes(searchInput.toLowerCase())
+        ) {
+          return each_data;
+        }
+      }
+    } else return each_data;
+  }
+  //function to display components in drawer
+  const navigationView=()=>(
     <View style={[styles.container, styles.navigationContainer]}>
       {/* exits the app */}
       <Pressable
@@ -29,6 +57,7 @@ function Home({ navigation }) {
       >
         <Text style={styles.btntext}>Logout</Text>
       </Pressable>
+      {/* close the drawer */}
       <Pressable
         onPress={() => {
           drawer.current.closeDrawer();
@@ -70,30 +99,7 @@ function Home({ navigation }) {
         <View style={styles.container}>
           {data
             .filter((each_data) => {
-              if (category || searchInput) {
-                if (category == each_data.category) {
-                  if (searchInput) {
-                    if (
-                      each_data.name
-                        .toLowerCase()
-                        .includes(searchInput.toLowerCase())
-                    ) {
-                      return each_data;
-                    }
-                  } else {
-                    return each_data;
-                  }
-                }
-                if (searchInput) {
-                  if (
-                    each_data.name
-                      .toLowerCase()
-                      .includes(searchInput.toLowerCase())
-                  ) {
-                    return each_data;
-                  }
-                }
-              } else return each_data;
+             return onHandleSearch(each_data)
             })
             ?.map(({ image, id, name, category, rating }) => {
               return (
