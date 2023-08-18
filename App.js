@@ -8,6 +8,9 @@ import Profile from "./screen/Profile";
 import Setting from "./screen/Setting";
 import Bottomtab from "./screen/Bottomtab";
 import { useFonts } from "expo-font";
+import { getAuth,onAuthStateChanged } from "firebase/auth";
+import { useEffect,useState } from "react";
+import { FIREBASE_AUTH } from "./FirebaseConfig";
 
 const Stack = createNativeStackNavigator();
 
@@ -16,22 +19,35 @@ export default function App() {
     PoppinsBold: require("./assets/fonts/Poppins-Bold.ttf"),
     PoppinsReg: require("./assets/fonts/Poppins-Regular.ttf"),
   });
+  //user state
+ const [user,setUser] = useState(null)
+ const auth = getAuth();
 
+ useEffect(()=>{
+ onAuthStateChanged(auth, (user)=>{
+  setUser(user)
+  console.log(user)
+ 
+ })
+ 
+ },[])
   return (
     <NavigationContainer>
       <Stack.Navigator
         screenOptions={{
           headerShown:false,
         }}
-        initialRouteName="Signup"
+        initialRouteName={user ? "Bottomtab" : "Action"}
       >
-        <Stack.Screen name="Home" component={Home} />
-        <Stack.Screen name="Bottomtab" component={Bottomtab} />
-        <Stack.Screen name="Login" component={Login} />
+        {
+          user? <Stack.Screen name="Bottomtab" component={Bottomtab} /> :  <Stack.Screen name="Action" component={Action} /> 
+        }
+         <Stack.Screen name="Home" component={Home}/>
         <Stack.Screen name="Signup" component={Signup} />
-        <Stack.Screen name="Action" component={Action} />
+       
         <Stack.Screen name="Profile" component={Profile} />
         <Stack.Screen name="Setting" component={Setting} />
+        <Stack.Screen name="Login" component={Login}  />
       </Stack.Navigator>
     </NavigationContainer>
   );

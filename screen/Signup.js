@@ -3,15 +3,15 @@ import {
   Text,
   StyleSheet,
   ScrollView,
-  Pressable,
-  TouchableOpacity,
   TextInput,
+  ActivityIndicator,
 } from "react-native";
 import Textinput from "../components/Textinput";
-import { useState, useCallback } from "react";
+import { useState, useCallback, useRef } from "react";
 import { DatePickerModal } from "react-native-paper-dates";
 import Button from "../components/Button";
-import FontAwesome from "react-native-vector-icons/FontAwesome";
+import { FIREBASE_AUTH } from "../FirebaseConfig";
+import { createUserWithEmailAndPassword } from "firebase/auth";
 
 export default function Signup({ navigation }) {
   //state initialization
@@ -21,8 +21,13 @@ export default function Signup({ navigation }) {
   const [emailError, setEmailError] = useState("");
   const [password, setPassword] = useState("");
   const [passwordError, setPasswordError] = useState("");
+  //loading state
+  const [loading, setLoading] = useState(false)
+  //date states
   const [date, setDate] = useState(undefined);
   const [open, setOpen] = useState(false);
+  //firebase auth
+  const auth = FIREBASE_AUTH
 
   const onDismissSingle = useCallback(() => {
     setOpen(false);
@@ -43,7 +48,7 @@ export default function Signup({ navigation }) {
     password: "",
   };
 
-  function onhandleSignup() {
+  async function  onhandleSignup() {
     //usernamevalidation
     if (username) {
       if (!username.includes(" ")) userAuth.username = username;
@@ -65,7 +70,7 @@ export default function Signup({ navigation }) {
     } else {
       setPasswordError("Password is required");
     }
-    console.log(passwordError);
+
     if (
       username &&
       email &&
@@ -74,14 +79,22 @@ export default function Signup({ navigation }) {
       !username.includes(" ") &&
       !password.includes(" ")
     ) {
-      navigation.navigate("Login", {
-        user: userAuth,
-      });
+      try{
+          setLoading(true)
+         const response = await createUserWithEmailAndPassword(auth,email,password)
+      }catch(error){
+             console.log("Error:", error)
+      }finally{
+        setLoading(false)
+        navigation.navigate("Login")
+      }
     }
   }
+
   return (
     <ScrollView>
       <DatePickerModal
+        //this property is creating a warning as 'locale en is not registered'
         locale="en"
         mode="single"
         visible={open}
@@ -104,10 +117,9 @@ export default function Signup({ navigation }) {
             setOpen(true);
           }}
         />
-
         <Textinput placeholder="Password" state={setPassword} />
         {passwordError && <Text style={styles.errortext}>{passwordError}</Text>}
-        <Button text="Sign up" color="#ffb805" onpressFunc={onhandleSignup} />
+       { loading ? <ActivityIndicator size="large" color="#ffb805"/> : <Button text="Sign up" color="#ffb805" onpressFunc={onhandleSignup} /> } 
       </View>
     </ScrollView>
   );

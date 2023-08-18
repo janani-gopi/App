@@ -33,12 +33,12 @@ function Action({ navigation }) {
 export default Action;
 
 const styles = StyleSheet.create({
-   container: {
-     flex: 1,
-     backgroundColor: "#ffff",
-     alignItems: "center",
-     justifyContent: "center",
-   },
+  container: {
+    flex: 1,
+    backgroundColor: "#ffff",
+    alignItems: "center",
+    justifyContent: "center",
+  },
   text: {
     fontSize: 60,
     color: "white",

@@ -40,6 +40,7 @@ const styles = StyleSheet.create({
       fontSize: 20,
       textAlign: "center",
       padding: 10,
+     
     },
     image: {
       padding: 10,

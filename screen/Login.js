@@ -1,23 +1,27 @@
-import { View, Text, ImageBackground } from "react-native";
+import { View, Text, ImageBackground, ActivityIndicator } from "react-native";
 import { useState } from "react";
 import Button from "../components/Button";
 import Textinput from "../components/Textinput";
 import { styles } from "../styles/Login";
+import { signInWithEmailAndPassword } from "firebase/auth";
+import { FIREBASE_AUTH } from "../FirebaseConfig";
 
 const image = {
   uri: "https://img.freepik.com/free-photo/top-view-meals-tasty-yummy-different-pastries-dishes-brown-surface_140725-14554.jpg",
 };
 
-export default function Login({ navigation, route }) {
+export default function Login({ navigation }) {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [emailError, setEmailError] = useState("");
   const [passwordError, setPasswordError] = useState("");
+  //loading state
+  const [loading, setLoading] = useState(false);
 
-  const signupEmail = route?.params?.user.email;
-  const signupPassword = route?.params?.user.password;
+  //firebase auth
+  const auth = FIREBASE_AUTH;
 
-  function onhandleLogin() {
+  async function onhandleLogin() {
     //email validation
     if (email === "") setEmailError("Please enter email");
     else setEmailError("");
@@ -25,10 +29,21 @@ export default function Login({ navigation, route }) {
     if (password === "") setPasswordError("Please enter password");
     else setPasswordError("");
     //authentication
-    if (email == signupEmail && password == signupPassword) {
-      navigation.navigate("Bottomtab");
-    } else if (email && password) {
-      alert("Please enter valid login details");
+    if (email && password) {
+      try {
+        setLoading(true);
+        const response = await signInWithEmailAndPassword(
+          auth,
+          email,
+          password
+        );
+        response && navigation.navigate("Bottomtab");
+      } catch (error) {
+        console.log(error);
+        alert("Please enter valid details");
+      } finally {
+        setLoading(false);
+      }
     }
   }
   return (
@@ -48,7 +63,15 @@ export default function Login({ navigation, route }) {
             {passwordError && (
               <Text style={styles.errortext}>{passwordError}</Text>
             )}
-            <Button text="Login" color="#ffb805" onpressFunc={onhandleLogin} />
+            {loading ? (
+              <ActivityIndicator size="small" color="#ffb805" />
+            ) : (
+              <Button
+                text="Login"
+                color="#ffb805"
+                onpressFunc={onhandleLogin}
+              />
+            )}
             <Text style={styles.smalltext}>Forgot password?</Text>
           </View>
         </ImageBackground>

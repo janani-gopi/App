@@ -35,6 +35,7 @@ const styles = StyleSheet.create({
     padding: 20,
     bottom: 0,
     right: 0,
+    width: 400
   },
   backgroundimg: {
     flex: 1,
